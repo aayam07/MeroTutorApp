@@ -201,7 +201,7 @@ exports.search_result = (req,res)=> {
             if (result.length > 0){
                 db.query("SELECT * FROM tutor where id = ?",[result[0].id],(error, id)=>{
                     console.log(id[0])
-                    res.render("search_result", {tutor:result,id:id[0]});
+                    res.render("search_result", {tutor:result,id:id[0], noResults: false});
     
                     
                 });
