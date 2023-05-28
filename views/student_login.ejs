@@ -1,0 +1,62 @@
+
+
+<!-- <form action= "/auth/login" method ="POST" >
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name ="username" required>
+    </div>
+
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name = "password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register User</button>
+
+</form> -->
+
+
+
+
+<%- include("header") -%>
+
+<% if(typeof mess != 'undefined') { %>
+    <% if (mess && mess.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <% mess.forEach((msg) => { %>
+            <p><%= msg %></p>
+          <% }) %>
+        </div>
+      <% } %>
+<% } %>
+
+<div class="container login-container">
+    <div class="row">
+        <div class="col-md-6 login-form-1">
+            <h3 class="login-header">Login As Student</h3>
+            <form action= "/auth/student_login" method ="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Your Username" value="" id="username" name= "username"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Your Password" value="" id="password" name="password"/>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    Not Registered?<a href="student_register" class="ForgetPwd"> Register Here</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 login-form-2">
+            <img src="/images/login-illustration.avif" alt="">
+        </div>
+    </div>
+</div>
+
+<%- include("footer") -%>
