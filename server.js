@@ -1,15 +1,19 @@
 const express = require('express');
-const app = express();
 const path =require('path');
 // const multer  = require('multer')
 // const upload = multer()
-
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session)     //overwrite dot method
 //var cookieParser = require('cookie-parser')
+const http = require('http');
+const socketIO = require('socket.io');
+const formatMessage = require('./utils/messages');
+const  {userJoin, getCurrentUser, userLeave, getRoomUsers}= require('./utils/users');
 
 
-
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 // app.use(bodyParser.json());
 //For protecting sensitive information
 const dotenv = require('dotenv');
@@ -47,23 +51,13 @@ var sessionStore = new MySQLStore({
 },db);
 
 
-// // Configure multer storage
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, "public/uploads/"); // Specify the destination folder to store the uploaded files
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, file.originalname); // Use the original filename for storing the file
-//     },
-//   });
+
   
 
 //for keeping the files of css 
 app.use(express.static("public"));
-// const upload = multer({ storage: storage });
-// module.exports = upload;
 // app.use(cors())
-
+const botName = 'Tutor Bot';
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended:false}));  //get data from forms and make it available in post method ko request ma
@@ -92,32 +86,78 @@ app.use('/auth', require('./routes/auth'))  //'/auth' paxi aako url yeta janxa
 
 
 
+
+// for chatroom
+// Run when client connects
+io.on('connection', (socket) => {
+    // console.log('New Web Socket Connection...');
+
+    socket.on('joinRoom', ({ username, roomId, room}) => {
+
+        const user = userJoin(socket.id, username, roomId, room);
+        console.log(username)
+        console.log(roomId)
+        console.log(room)
+
+        socket.join(user.room)
+
+        // Welcome current user
+        socket.emit('message', formatMessage(botName, 'Welcome to TutorChat!'));  // to emit message to single client
+
+        // Broadcast when a user connects
+        socket.broadcast
+            .to(user.room)
+            .emit(
+                'message', 
+                formatMessage(botName, `${user.username} has joined the chat`)
+            );  // emits to everybody excpet the user who is connecting
+
+
+        // Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            roomId: user.roomId,
+            users: getRoomUsers(user.room)
+        });
+
+    });
+
+    
+    // to emit message to all the client in general
+    // io.emit()
+
+    
+    // Listen for chatMessage
+    socket.on('chatMessage', (msg) => {
+        // console.log(msg);
+
+        const user = getCurrentUser(socket.id);
+
+        io.to(user.room).emit('message', formatMessage(user.username, msg));
+    });
+
+
+    // Runs when client disconnects
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id);
+
+        if(user) {
+            io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`));
+
+            // Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            });
+
+        }
+
+    });
+
+});
+
+
+
 const port = process.env.PORT || 8000;
-app.listen(port, ()=>{console.log(`listening on port ${port}`)});
-
-
-/*
-home
-about
-detail id:
-user profile
-login
-register
-apply as guide
-search
-accomodationDetail
-*/
-
-/*
-NAVBAR
-home
-about
-sites
-contact us 
-*/
-
-
-
-
-
+server.listen(port, ()=>{console.log(`listening on port ${port}`)});
 

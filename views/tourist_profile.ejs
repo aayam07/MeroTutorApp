@@ -39,7 +39,8 @@
         </div>
 
         <div class="col-md-2">
-            <a href="/auth/logout"><input type="submit" class="profile-edit-btn" name="btnLogOut" value="Log Out"/></a>
+            <a href="/join_chatroom" target="_blank"><button class="btn btn-sm btn-info download-button m-1" type="button">Join chatroom</button></a>
+            <a href="/auth/logout"><input type="submit" class="profile-edit-btn my-2" name="btnLogOut" value="Log Out"/></a>
         </div>
         
     </div>
@@ -91,6 +92,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <p><%= session.experience %> <span> years</span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Subject Expertise</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><%= session.subject.split(',').join(', '); %> </p>
                                 </div>
                             </div>
                             <div class="row">

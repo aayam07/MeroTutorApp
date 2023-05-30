@@ -48,6 +48,20 @@ router.get('/search_result', (req,res)=>{
 });
 
 
+// for create chat room
+router.get('/create_chatroom', (req,res) => {
+  return res.render("create_chatroom");
+});
+
+router.get('/join_chatroom', (req,res) => {
+  return res.render("chatindex");
+});
+
+router.get('/chat', (req,res) => {
+  return res.render("chat");
+});
+
+
 router.get('/detail/:id', pageController.detail_view);  //id is tutor ko id
 
 router.post('/place_upload',upload.array('picture',12),pageController.place_upload) 

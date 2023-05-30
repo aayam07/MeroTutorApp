@@ -21,6 +21,7 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
 
+            
         <link rel="stylesheet" href="/css/indexstyle.css">
         <link rel="stylesheet" href="/css/profile.css">
         <link rel="stylesheet" href="/css/login.css">
@@ -28,6 +29,17 @@
         <link rel="stylesheet" href="/css/features.css">
         <link rel="stylesheet" href="/css/calltoaction.css">
         <link rel="stylesheet" href="/css/testimonials.css">
+        <link rel="stylesheet" href="css/chatstyle.css" />
+        
+		
+
+        <style>
+            /* Reset margin and padding for the body */
+            body {
+              margin: 0;
+              padding: 0;
+            }
+          </style>
         
 
     <!-- Favicons -->
@@ -88,12 +100,12 @@
         <ul class="nav-links" style="width: 0;">
             <% if (isLoggedIn.isTutor) { %>
                 <li>
-                    <a href="/auth/profile"><img src="/uploads/<%= isLoggedIn.tutorPicture %>" style="border: 1px solid paleturquoise; width: 40px; height: 30px; display: inline-block; text-align: center; border-radius: 50%; font-size: 1.2rem;"></a>
+                    <a href="/auth/profile"><img src="/uploads/<%= isLoggedIn.tutorPicture %>" style="border: 2px solid paleturquoise; width: 40px; height: 30px; display: inline-block; text-align: center; border-radius: 50%; font-size: 1.2rem;"></a>
                   </li>
             <% } %>   
             <% if (!isLoggedIn.isTutor) { %> 
             <li>
-                <a href="/auth/profile"><img src="/uploads/<%= isLoggedIn.studentPicture %>" style="border: 1px solid paleturquoise; width: 40px; height: 30px; display: inline-block; text-align: center; border-radius: 50%; font-size: 1.2rem;"></a>
+                <a href="/auth/profile"><img src="/uploads/<%= isLoggedIn.studentPicture %>" style="border: 2px solid paleturquoise; width: 40px; height: 30px; display: inline-block; text-align: center; border-radius: 50%; font-size: 1.2rem;"></a>
               </li>
             <% } %> 
             <!-- <li><a href="/auth/profile" style="border: 1px solid paleturquoise; width: 40px; height: 30px; display: inline-block; text-align: center; border-radius: 50%; font-size: 1.2rem;">P</a></li> -->
